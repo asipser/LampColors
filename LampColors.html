@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="LampColors.css">
+		<script src="scripts.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<canvas width ="512" height = "512" id = "gradient_canvas"> </canvas>
+		<div id = 'brightness_container'>
+			<div id = 'brightness'></div>
+		</div>
+		
+
+		<script type = "text/javascript">
+
+
+			scale = 1;
+
+			var canvas = $('#gradient_canvas')[0].getContext('2d'); // sets up canvas context allowing user interaction w/ image ([0] gives DOM object)
+			var img = new Image();
+			img.src = 'gradient.jpg';
+			$(img).load(function(){
+				canvas.drawImage(img,0,0);			
+			});
+			var r = 0
+			var g = 0
+			var b = 0
+
+			// NOT WORKING PROPERLY ON MOBILE
+
+			// $('#gradient_canvas').mousedown(function(e){ 
+			// 	console.log('hello');
+			// 	$('#gradient_canvas').bind('mousemove',function(e){
+			// 		var x = e.pageX - this.offsetLeft;
+			// 		var y = e.pageY - this.offsetTop;
+			// 		selectionInfo = canvas.getImageData(x,y,1,1).data;
+			// 		[r,g,b] = selectionInfo;
+			// 		$('#brightness').css('background-color',rgbToHex(r,g,b));});
+			// 	$('#gradient_canvas').bind('mouseup', function(e){
+			// 		console.log('mouseup');
+			// 		$('#gradient_canvas').unbind('mousemove');
+			// 		});
+			// });
+
+				$('#gradient_canvas')[0].addEventListener('touchmove',function(e){
+					var x = e.pageX - this.offsetLeft;
+					var y = e.pageY - this.offsetTop;
+					selectionInfo = canvas.getImageData(x,y,1,1).data;
+					r = selectionInfo[0];
+					g = selectionInfo[1];
+					b = selectionInfo[2];
+					$('#brightness').css('background-color',rgbToHex(r,g,b));
+				});
+
+			$('#brightness_container')[0].addEventListener('touchmove',function(e){
+				var x = e.pageX
+						x = Math.max(30,x);
+						x = Math.min(482,x);
+						scale = (x-30)/452;
+						color = rgbToHex(r,g,b);
+						$('#brightness').css('left',x -30);
+						$('#brightness').css('background-color',color);
+					});
+
+
+
+
+
+
+		</script>
+
+	</body>
+
+</html>
