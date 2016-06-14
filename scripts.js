@@ -1,5 +1,11 @@
 
 
+function updateSlider(color){
+	slider_ctx.clearRect(0,130,130,50);
+	slider_ctx.fillStyle = color;
+	slider_ctx.rect(0,130,130,50);
+	slider_ctx.fill();
+}
 function componentToHex(c) {
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;

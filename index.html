@@ -10,9 +10,11 @@
 
 	<body>
 		<canvas width ="615" height = "475" id = "gradient_canvas"> </canvas> <!-- static gradient -->
-		<canvas width ="615" height = "475" id = "draw_canvas"> </canvas> <!-- drawing lines -->
+		<canvas width ="690" height = "475" id = "draw_canvas"> </canvas> <!-- drawing lines -->
 		<img src="grad2.png" id = "gradient_img">
+
 		<div id = 'brightness_container'>
+			<canvas width = '130' height = '180' id = 'brightness_slider'> </canvas>
 			<div id = 'brightness'></div>
 		</div>
 		
@@ -36,10 +38,11 @@
 			var g = 0
 			var b = 0
 
-			$('#draw_canvas')[0].addEventListener('touchmove',function(e){
-				draw_canvas.clearRect(0,0,max_x,max_y);
+			$('#draw_canvas')[0].addEventListener('mousemove',function(e){
+				draw_canvas.clearRect(0,0,690,max_y);
 				var x = e.pageX - this.offsetLeft;
 				var y = e.pageY - this.offsetTop;
+				x = Math.min(max_x-1,x);
 				selectionInfo = canvas.getImageData(x,y,1,1).data;
 
 				draw_canvas.strokeStyle = 'rgba(0,0,0,1)';
@@ -84,19 +87,34 @@
 				r = selectionInfo[0];
 				g = selectionInfo[1];
 				b = selectionInfo[2];
-				$('#brightness').css('background-color',rgbToHex(r,g,b));
-				var css_expr = 'linear-gradient(to right, #000000 0%,' + grad_color + ' 100%)';
+				//$('#brightness').css('background-color',rgbToHex(r,g,b));
+				updateSlider(rgbToHex(r,g,b));
+				var css_expr = 'linear-gradient(to right, #000000 11%,' + grad_color + ' 89%)';
 				$('#brightness_container').css('background',css_expr);
 			});
 
-			$('#brightness_container')[0].addEventListener('touchmove',function(e){
+			var slider_ctx = $('#brightness_slider')[0].getContext('2d');
+			slider_ctx.lineWidth=8;
+			slider_ctx.beginPath();
+			slider_ctx.moveTo(65,0);
+			slider_ctx.lineTo(65,130);
+			slider_ctx.closePath();
+			slider_ctx.stroke();
+
+
+			slider_ctx.rect(0,130,130,50);
+			slider_ctx.fill();
+
+			$('#brightness_container')[0].addEventListener('mousemove',function(e){
 				var x = e.pageX
-						x = Math.max(45,x);
-						x = Math.min(max_x-45,x);
-						scale = (x-45)/(max_x-45);
+						x = Math.max(0,x);
+						x = Math.min(max_x,x);
+						scale = (x)/(max_x);
+						console.log(scale);
 						color = rgbToHex(r,g,b);
-						$('#brightness').css('left',x -45);
-						$('#brightness').css('background-color',color);
+						$('#brightness_slider').css('left',x -65);
+						updateSlider(color);
+						//$('#brightness').css('background-color',color);
 					});
 
 
