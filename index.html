@@ -38,7 +38,7 @@
 			var g = 0
 			var b = 0
 
-			$('#draw_canvas')[0].addEventListener('mousemove touchmove',function(e){
+			$('#draw_canvas')[0].addEventListener('touchmove',function(e){
 				draw_canvas.clearRect(0,0,690,max_y);
 				var x = e.pageX - this.offsetLeft;
 				var y = e.pageY - this.offsetTop;
@@ -105,7 +105,7 @@
 			slider_ctx.rect(0,130,130,50);
 			slider_ctx.fill();
 
-			$('#brightness_container')[0].addEventListener('mousemove touchmove',function(e){
+			$('#brightness_container')[0].addEventListener('touchmove',function(e){
 				var x = e.pageX
 						x = Math.max(0,x);
 						x = Math.min(max_x,x);
