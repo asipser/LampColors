@@ -9,26 +9,26 @@
 	</head>
 
 	<body>
-		<canvas width ="512" height = "512" id = "gradient_canvas"> </canvas> <!-- static gradient -->
-		<canvas width ="512" height = "512" id = "draw_canvas"> </canvas> <!-- drawing lines -->
-
+		<canvas width ="615" height = "475" id = "gradient_canvas"> </canvas> <!-- static gradient -->
+		<canvas width ="615" height = "475" id = "draw_canvas"> </canvas> <!-- drawing lines -->
+		<img src="grad2.png" id = "gradient_img">
 		<div id = 'brightness_container'>
 			<div id = 'brightness'></div>
 		</div>
 		
 
 		<script type = "text/javascript">
-			max_x = 512;
-			max_y = 512;
+			line_width = 8;
+			max_x = 615;
+			max_y = 475;
 
 			scale = 1;
 
 			var canvas = $('#gradient_canvas')[0].getContext('2d'); // sets up canvas context allowing user interaction w/ image ([0] gives DOM object)
 			var draw_canvas = $('#draw_canvas')[0].getContext('2d'); // sets up canvas context 
-			draw_canvas.strokeStyle = 'rgba(0,0,0,1)';
-			draw_canvas.lineWidth = 16;
+
 			var img = new Image();
-			img.src = 'grad.png';
+			img.src = 'grad2.png';
 			$(img).load(function(){
 				canvas.drawImage(img,0,0);			
 			});
@@ -36,40 +36,64 @@
 			var g = 0
 			var b = 0
 
-			$('#draw_canvas')[0].addEventListener('mousemove',function(e){
+			$('#draw_canvas')[0].addEventListener('touchmove',function(e){
 				draw_canvas.clearRect(0,0,max_x,max_y);
-				draw_canvas.beginPath();
 				var x = e.pageX - this.offsetLeft;
 				var y = e.pageY - this.offsetTop;
 				selectionInfo = canvas.getImageData(x,y,1,1).data;
 
+				draw_canvas.strokeStyle = 'rgba(0,0,0,1)';
+				draw_canvas.lineWidth = line_width;
+
+				draw_canvas.beginPath();
 				draw_canvas.moveTo(x,0);
 				draw_canvas.lineTo(x,max_y);
 				draw_canvas.stroke();
 				draw_canvas.moveTo(0,y);
 				draw_canvas.lineTo(max_x,y);
+				draw_canvas.closePath();
 				draw_canvas.stroke();
-				draw_canvas.beginPath();
 
-				draw_canvas.clearRect(x-30,y-30,60,60);
-				draw_canvas.rect(x-22,y-22,44,44);
+				var clear_radius = 75;
+
+				//draw_canvas.clearRect(x-clear_radius,y-clear_radius,2*clear_radius,2*clear_radius);
+
+				var x_L = x - clear_radius;
+				var y_L = y;
+				var x_T = x;
+				var y_T = y + clear_radius;
+				var x_R = x + clear_radius;
+				var y_R = y;
+				var x_B = x;
+				var y_B = y - clear_radius;
+
+				var grad_color = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b); // gets hex code for rgb selected on screen
+				//var D = Math.ceil((line_width/2)/Math.sqrt(2));
+				draw_canvas.strokeStyle = 'rgba(0,255,255,0)';
+				draw_canvas.beginPath();
+				draw_canvas.moveTo(x_L,y_L);
+				draw_canvas.lineTo(x_T,y_T);
+				draw_canvas.lineTo(x_R,y_R);
+				draw_canvas.lineTo(x_B,y_B);
+				draw_canvas.closePath();
+				//draw_canvas.rect(x-22,y-22,44,44);
+				draw_canvas.fillStyle = grad_color;
+				draw_canvas.fill();
 				draw_canvas.stroke();
 
 				r = selectionInfo[0];
 				g = selectionInfo[1];
 				b = selectionInfo[2];
 				$('#brightness').css('background-color',rgbToHex(r,g,b));
-				grad_color = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 				var css_expr = 'linear-gradient(to right, #000000 0%,' + grad_color + ' 100%)';
-				console.log(css_expr);
 				$('#brightness_container').css('background',css_expr);
 			});
 
 			$('#brightness_container')[0].addEventListener('touchmove',function(e){
 				var x = e.pageX
 						x = Math.max(45,x);
-						x = Math.min(467,x);
-						scale = (x-45)/467;
+						x = Math.min(max_x-45,x);
+						scale = (x-45)/(max_x-45);
 						color = rgbToHex(r,g,b);
 						$('#brightness').css('left',x -45);
 						$('#brightness').css('background-color',color);
