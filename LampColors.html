@@ -58,11 +58,11 @@
 
 			$('#brightness_container')[0].addEventListener('touchmove',function(e){
 				var x = e.pageX
-						x = Math.max(30,x);
-						x = Math.min(482,x);
-						scale = (x-30)/452;
+						x = Math.max(45,x);
+						x = Math.min(467,x);
+						scale = (x-45)/467;
 						color = rgbToHex(r,g,b);
-						$('#brightness').css('left',x -30);
+						$('#brightness').css('left',x -45);
 						$('#brightness').css('background-color',color);
 					});
 
