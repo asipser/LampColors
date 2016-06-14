@@ -43,6 +43,9 @@
 				var x = e.pageX - this.offsetLeft;
 				var y = e.pageY - this.offsetTop;
 				x = Math.min(max_x-1,x);
+				y = Math.min(max_y-1,y);
+				x = Math.max(1,x);
+				y = Math.max(1,y);
 				selectionInfo = canvas.getImageData(x,y,1,1).data;
 
 				draw_canvas.strokeStyle = 'rgba(0,0,0,1)';
