@@ -9,18 +9,23 @@
 	</head>
 
 	<body>
-		<canvas width ="512" height = "512" id = "gradient_canvas"> </canvas>
+		<canvas width ="512" height = "512" id = "gradient_canvas"> </canvas> <!-- static gradient -->
+		<canvas width ="512" height = "512" id = "draw_canvas"> </canvas> <!-- drawing lines -->
+
 		<div id = 'brightness_container'>
 			<div id = 'brightness'></div>
 		</div>
 		
 
 		<script type = "text/javascript">
-
+			max_x = 512;
+			max_y = 512;
 
 			scale = 1;
 
 			var canvas = $('#gradient_canvas')[0].getContext('2d'); // sets up canvas context allowing user interaction w/ image ([0] gives DOM object)
+			var draw_canvas = $('#draw_canvas')[0].getContext('2d'); // sets up canvas context 
+			draw_canvas.strokeStyle = 'rgba(0,0,0,0.2)';
 			var img = new Image();
 			img.src = 'gradient.jpg';
 			$(img).load(function(){
@@ -30,31 +35,26 @@
 			var g = 0
 			var b = 0
 
-			// NOT WORKING PROPERLY ON MOBILE
+			$('#draw_canvas')[0].addEventListener('touchmove',function(e){
+				draw_canvas.clearRect(0,0,max_x,max_y);
+				draw_canvas.beginPath();
+				var x = e.pageX - this.offsetLeft;
+				var y = e.pageY - this.offsetTop;
+				selectionInfo = canvas.getImageData(x,y,1,1).data;
 
-			// $('#gradient_canvas').mousedown(function(e){ 
-			// 	console.log('hello');
-			// 	$('#gradient_canvas').bind('mousemove',function(e){
-			// 		var x = e.pageX - this.offsetLeft;
-			// 		var y = e.pageY - this.offsetTop;
-			// 		selectionInfo = canvas.getImageData(x,y,1,1).data;
-			// 		[r,g,b] = selectionInfo;
-			// 		$('#brightness').css('background-color',rgbToHex(r,g,b));});
-			// 	$('#gradient_canvas').bind('mouseup', function(e){
-			// 		console.log('mouseup');
-			// 		$('#gradient_canvas').unbind('mousemove');
-			// 		});
-			// });
+				draw_canvas.moveTo(x,0);
+				draw_canvas.lineTo(x,max_y);
+				draw_canvas.stroke();
+				draw_canvas.beginPath();
+				draw_canvas.moveTo(0,y);
+				draw_canvas.lineTo(max_x,y);
+				draw_canvas.stroke();
 
-				$('#gradient_canvas')[0].addEventListener('touchmove',function(e){
-					var x = e.pageX - this.offsetLeft;
-					var y = e.pageY - this.offsetTop;
-					selectionInfo = canvas.getImageData(x,y,1,1).data;
-					r = selectionInfo[0];
-					g = selectionInfo[1];
-					b = selectionInfo[2];
-					$('#brightness').css('background-color',rgbToHex(r,g,b));
-				});
+				r = selectionInfo[0];
+				g = selectionInfo[1];
+				b = selectionInfo[2];
+				$('#brightness').css('background-color',rgbToHex(r,g,b));
+			});
 
 			$('#brightness_container')[0].addEventListener('touchmove',function(e){
 				var x = e.pageX
