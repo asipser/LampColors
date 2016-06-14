@@ -26,8 +26,9 @@
 			var canvas = $('#gradient_canvas')[0].getContext('2d'); // sets up canvas context allowing user interaction w/ image ([0] gives DOM object)
 			var draw_canvas = $('#draw_canvas')[0].getContext('2d'); // sets up canvas context 
 			draw_canvas.strokeStyle = 'rgba(0,0,0,0.2)';
+			draw_canvas.lineWidth = 3;
 			var img = new Image();
-			img.src = 'gradient.jpg';
+			img.src = 'grad.png';
 			$(img).load(function(){
 				canvas.drawImage(img,0,0);			
 			});
@@ -54,6 +55,10 @@
 				g = selectionInfo[1];
 				b = selectionInfo[2];
 				$('#brightness').css('background-color',rgbToHex(r,g,b));
+				grad_color = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+				var css_expr = 'linear-gradient(to right, #000000 0%,' + grad_color + ' 100%)';
+				console.log(css_expr);
+				$('#brightness_container').css('background',css_expr);
 			});
 
 			$('#brightness_container')[0].addEventListener('touchmove',function(e){
