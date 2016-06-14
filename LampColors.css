@@ -13,13 +13,13 @@
 
 #brightness_slider{
 	position: absolute;
-	left: 550px;
+	left: 555px;
 }
 
 #brightness_container{
 	position: absolute;
 	top: 500px;
-	height: 130px;
+	height: 50px;
 	width: 615px;
 	background: linear-gradient(to right, #000000 11%,#ffffff 89%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	opacity: 1;

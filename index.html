@@ -14,7 +14,7 @@
 		<img src="grad2.png" id = "gradient_img">
 
 		<div id = 'brightness_container'>
-			<canvas width = '130' height = '180' id = 'brightness_slider'> </canvas>
+			<canvas width = '120' height = '170' id = 'brightness_slider'> </canvas>
 			<div id = 'brightness'></div>
 		</div>
 		
@@ -99,13 +99,13 @@
 			var slider_ctx = $('#brightness_slider')[0].getContext('2d');
 			slider_ctx.lineWidth=8;
 			slider_ctx.beginPath();
-			slider_ctx.moveTo(65,0);
-			slider_ctx.lineTo(65,130);
+			slider_ctx.moveTo(60,0);
+			slider_ctx.lineTo(60,50);
 			slider_ctx.closePath();
 			slider_ctx.stroke();
 
 
-			slider_ctx.rect(0,130,130,50);
+			slider_ctx.rect(0,50,120,120);
 			slider_ctx.fill();
 
 			$('#brightness_container')[0].addEventListener('touchmove',function(e){
@@ -115,7 +115,7 @@
 						scale = (x)/(max_x);
 						console.log(scale);
 						color = rgbToHex(r,g,b);
-						$('#brightness_slider').css('left',x -65);
+						$('#brightness_slider').css('left',x -60);
 						updateSlider(color);
 						//$('#brightness').css('background-color',color);
 					});
