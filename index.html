@@ -25,8 +25,8 @@
 
 			var canvas = $('#gradient_canvas')[0].getContext('2d'); // sets up canvas context allowing user interaction w/ image ([0] gives DOM object)
 			var draw_canvas = $('#draw_canvas')[0].getContext('2d'); // sets up canvas context 
-			draw_canvas.strokeStyle = 'rgba(0,0,0,0.2)';
-			draw_canvas.lineWidth = 3;
+			draw_canvas.strokeStyle = 'rgba(0,0,0,1)';
+			draw_canvas.lineWidth = 16;
 			var img = new Image();
 			img.src = 'grad.png';
 			$(img).load(function(){
@@ -36,7 +36,7 @@
 			var g = 0
 			var b = 0
 
-			$('#draw_canvas')[0].addEventListener('touchmove',function(e){
+			$('#draw_canvas')[0].addEventListener('mousemove',function(e){
 				draw_canvas.clearRect(0,0,max_x,max_y);
 				draw_canvas.beginPath();
 				var x = e.pageX - this.offsetLeft;
@@ -46,9 +46,13 @@
 				draw_canvas.moveTo(x,0);
 				draw_canvas.lineTo(x,max_y);
 				draw_canvas.stroke();
-				draw_canvas.beginPath();
 				draw_canvas.moveTo(0,y);
 				draw_canvas.lineTo(max_x,y);
+				draw_canvas.stroke();
+				draw_canvas.beginPath();
+
+				draw_canvas.clearRect(x-30,y-30,60,60);
+				draw_canvas.rect(x-22,y-22,44,44);
 				draw_canvas.stroke();
 
 				r = selectionInfo[0];
